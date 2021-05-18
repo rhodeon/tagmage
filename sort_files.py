@@ -3,14 +3,14 @@ import eyed3
 
 from utils import *
 
-def sort_files(files, dest):
+def sort_files(songs, dest):
     """
         Creates folders and move files
     """
     dest_dir = obtain_dest_dir(dest)    # destination directory
 
-    for raw_name in files:
-        tagged_file = eyed3.load(raw_name)      # eyed3 object for tag info
+    for song in songs:
+        tagged_file = eyed3.load(song)      # eyed3 object for tag info
         title_name = tagged_file.tag.title      # title tag
         artist_dir = tagged_file.tag.artist     # artist tag
         album_dir = tagged_file.tag.album       # album tag
@@ -26,4 +26,4 @@ def sort_files(files, dest):
             os.makedirs(new_directory)
 
         if not os.path.exists(new_filename):
-            os.rename(raw_name, new_filename) 
+            os.rename(song, new_filename) 

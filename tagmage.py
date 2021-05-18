@@ -5,8 +5,9 @@
 import sys
 
 from sort_files import *
+from embed_lyrics import *
 
-flags = ["--sort", "--merge"]   # list of valid argument flags
+flags = ["--sort", "--embed"]   # list of valid argument flags
 
 def main():
     args = sys.argv
@@ -18,11 +19,14 @@ def main():
 
     src_dir = args[2]
     set_working_dir(src_dir)
-    raw_files = list_files()    # files in source directory
+    songs = list_files()    # files in source directory
 
-    if flag == "--sort":
+    if flag == flags[0]:
         dest_dir = args[3]
-        sort_files(raw_files, dest_dir)
+        sort_files(songs, dest_dir)
+    
+    elif flag == flags[1]:
+        embed_lyrics(songs)
     
 if __name__ == "__main__":
     main()
