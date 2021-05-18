@@ -4,8 +4,8 @@
 
 import sys
 
-from sort_files import *
-from embed_lyrics import *
+from operations.sort_files import *
+from operations.embed_lyrics import *
 
 flags = ["--sort", "--embed"]   # list of valid argument flags
 
@@ -14,7 +14,7 @@ def main():
     flag = args[1]
     
     if flag not in flags:
-        print("Enter a valid flag")
+        print(f"{flag} is not a valid flag.  See: {flags}")
         return
 
     src_dir = args[2]
