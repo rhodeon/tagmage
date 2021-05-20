@@ -4,7 +4,7 @@ import eyed3
 from utils import *
 
 successes = []
-failures = []
+failures = {}
 
 def embed_lyrics(songs):
     """
@@ -20,14 +20,19 @@ def embed_lyrics(songs):
                     lyrics_string = lrc.read()
                 
                 tagged_song = eyed3.load(song)
-                tagged_song.tag.lyrics.set(text = lyrics_string)    # embed lyrics
-                os.remove(lyrics)   # delete lyrics file
                 
+                # embed lyrics
+                try:    # check if lyric already exists and replace
+                    tagged_song.tag.lyrics[0].text = lyrics_string
+                except IndexError:  # lyric doesn't exist. create new one
+                    tagged_song.tag.lyrics.set(text = lyrics_string, lang="")
+                
+                os.remove(lyrics)   # delete lyrics file
                 tagged_song.tag.save()
                 successes.append(song)
 
-            except:
-                failures.append(song)
+            except Exception as reason:
+                failures[song] = reason
                 continue
 
     displayResult()
@@ -41,6 +46,6 @@ def displayResult():
 
     if failures:
         print("FAILED:")
-        for song in failures:
-            print(song)
+        for song, reason in failures.items():
+            print(f"{song} - {reason}")
         print()
